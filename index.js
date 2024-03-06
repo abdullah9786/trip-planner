@@ -2,7 +2,7 @@
 const express = require('express')
 require('express-async-errors');
 const connectDB = require('./src/Config/DatabaseConfig')
-const notFound = require('./src/api/v1/middleware/not-found');
+// const notFound = require('./src/api/v1/middleware/not-found');
 const errorHandlerMiddleware = require('./src/Errors/error-handler-middlerware');
 require ('dotenv').config()
 
@@ -21,7 +21,7 @@ app.use('/api/v1/ai', require('./src/api/v1/Routes/ai-response'))
 app.use('/api/v1/payment', require('./src/api/v1/Routes/payment'))
 
 // Middlewares
-app.use(notFound)
+// app.use(notFound)
 app.use(errorHandlerMiddleware)
 
 
