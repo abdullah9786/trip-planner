@@ -37,12 +37,12 @@ const create = async (data) => {
 
   const mailOptions = {
     from: 'abdullahansari9768@gmail.com',
-    to: 'abdullahansari9768@gmail.com',
+    to: data.email,
     subject: 'Email Verification',
     html: `Click <a href="http://yourdomain.com/verify?token=${token}">here</a> to verify your email.`,
   };
   console.log(token);
-  // await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
   return result;
 };
 
