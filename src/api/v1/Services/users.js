@@ -63,14 +63,15 @@ const update = async (userId, couponStatus) => {
 };
 
 const verify = async (token) => {
+  console.log("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuc2h1bHRhdGVkMTk5OUBnbWFpbC5jb20iLCJpYXQiOjE3MDk4MjIwOTR9.SFCszu746Q2AGF7zA0PvJ_Q46J8QrvApQj1I0J3hsyA");
   if (!token) {
-    throw new BadRequestError("Token is missing", "Validator Middleware");
+    throw new BadRequestError("Token is missing", "user service");
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findOne({ email: decoded.email });
 
   if (!user) {
-    throw new NotFoundError("Token is missing", "Validator Middleware");
+    throw new NotFoundError("User not Found", "user service");
   }
 
   if (user.isValid) {
