@@ -28,10 +28,19 @@ const verifyUser = async (req,res) => {
   res.status(StatusCodes.OK).json({ result });
 }
 
+const verifyGoogleUser = async (req,res) => {
+  let token = req.query.token
+  console.log(token);
+  let result = await userService.googleLogin(token)
+  res.status(StatusCodes.OK).json({ result });
+}
+
+
 
 module.exports = {
   getAllUsers,
   addUser,
   patchUser,
-  verifyUser
+  verifyUser,
+  verifyGoogleUser
 };
