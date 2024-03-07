@@ -12,6 +12,10 @@ const CouponsSchema = new Schema(
       required: false,
       default:100
     },
+    stripeCouponId: {
+      type: String,
+      unique: true,
+    },
   },
   { timestamps: true }
 );

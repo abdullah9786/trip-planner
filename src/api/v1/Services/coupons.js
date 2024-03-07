@@ -16,26 +16,59 @@ const get = async () => {
 const create = async (name) => {
     const coupon = await stripe.coupons.create({
         // duration_in_months: 3,
-        duration:"forever",
+        duration: "forever",
         name,
         percent_off: 100,
     });
     await Coupon.create({
-    name,
-    percent_off:100
-  });
+        name,
+        percent_off: 100,
+        stripeCouponId: coupon.id
+    });
 
     console.log(coupon);
-    return {message:"coupon Created Successfully"}
+    return "coupon Created Successfully"
 }
-const remove = async (couponId) => {
-    Users.updateMany({ couponRef:couponId }, { $set: { couponRef: "", isPremium:false } });
+const remove = async (couponId, stripeCouponId) => {
+    Users.updateMany({ couponRef: couponId }, { $set: { couponRef: "", isPremium: false } });
     let result = await Coupon.findByIdAndDelete({ _id: couponId })
     return result;
-  };
+};
+const verify = async (couponName) => {
+    let coupon = await Coupon.findOne({ name: couponName })
+    console.log(coupon);
+    if (coupon) {
+        return "valid";
+    }
+    else {
+        return "invalid";
+    }
+}
 
+const redeem = async (couponName, userId) => {
+    let coupon = await Coupon.findOne({ name: couponName })
+    console.log(coupon);
+    if (coupon) {
+        let user = await Users.findOne({ _id: userId })
+        if (user) {
+            user.isPremium = true
+            user.stripeCoupon = coupon._id
+            user.save()
+            console.log(user);
+            return user
+        }
+        else {
+            throw new NotFoundError("User not Found", "Coupon Service");
+        }
+    }
+    else {
+        return "invalid";
+    }
+}
 module.exports = {
     get,
     create,
-    remove
+    remove,
+    verify,
+    redeem
 };
