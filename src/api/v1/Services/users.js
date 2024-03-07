@@ -13,24 +13,12 @@ const get = async () => {
 
 const create = async (data) => {
   console.log(process.env.JWT_SECRET);
-  console.log(data);
-  let createdUser = await User.create(data);
-  const customer = await stripe.customers.create({
-    name: data.email,
-    email: data.email,
-  });
-  console.log(customer.id, "asdsad");
-
-  let result = await User.findByIdAndUpdate(
-    createdUser._id,
-    { stripeId: customer.id },
-    { new: true } // Return the updated document
-  );
+  let result
   let token = jwt.sign({ email: data.email }, process.env.JWT_SECRET);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'abdullahansari9768@gmail.com',
+      user: 'abdullahansari9768@gmail.com',   
       pass: 'vgvk fdhs ikdo ljze',
     },
   });
@@ -41,9 +29,27 @@ const create = async (data) => {
     subject: 'Email Verification',
     html: `Click <a href="http://yourdomain.com/verify?token=${token}">here</a> to verify your email.`,
   };
-  console.log(token);
-  await transporter.sendMail(mailOptions);
-  return result;
+
+  const user = await User.findOne({ email: data.email });
+  console.log(user);
+  if(user){
+    await transporter.sendMail(mailOptions);
+  }
+  else{
+    let createdUser = await User.create(data);
+    const customer = await stripe.customers.create({
+      name: data.email,
+      email: data.email,
+    });
+     result = await User.findByIdAndUpdate(
+      createdUser._id,
+      { stripeId: customer.id },
+      { new: true } // Return the updated document
+    );
+  }
+
+
+  return "Click the link you received in mail";
 };
 
 const update = async (userId, couponStatus) => {
