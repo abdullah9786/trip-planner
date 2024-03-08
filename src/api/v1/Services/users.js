@@ -97,14 +97,23 @@ const googleLogin = async (token) => {
     }
   )
 
-  const user = await User.findOne({ email: res.data.email });
+  let user = await User.findOne({ email: res.data.email });
 
   if (user) {
     user.isValid = true;
     await user.save();
   }
   else{
-     await User.create({email:res.data.email, isValid:true});
+    let createdUser = await User.create({email:res.data.email, isValid:true});
+    const customer = await stripe.customers.create({
+      name: res.data.email,
+      email: res.data.email,
+    });
+    user = await User.findByIdAndUpdate(
+      createdUser._id,
+      { stripeId: customer.id },
+      { new: true } // Return the updated document
+    );
   }
 
   return user;
