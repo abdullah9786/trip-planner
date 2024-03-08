@@ -58,7 +58,7 @@ const update = async (userId, couponStatus) => {
     { _id: userId },
     { isPremium: couponStatus },
     { returnDocument: "after", runValidators: true }
-  );
+  ).populate('stripeCoupon');
   return result;
 };
 
