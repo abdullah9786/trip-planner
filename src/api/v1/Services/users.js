@@ -71,16 +71,16 @@ const verify = async (token) => {
   const user = await User.findOne({ email: decoded.email });
 
   if (!user) {
-    throw new NotFoundError("User not Found", "user service");
+    throw new NotFoundError("Inavlid", "user service");
   }
 
   if (user.isValid) {
-    return { isValid: true };
+    return user;
   }
 
   user.isValid = true;
   await user.save();
-  return { isValid: true };
+  return user;
 
 };
 
@@ -107,7 +107,7 @@ const googleLogin = async (token) => {
      await User.create({email:res.data.email, isValid:true});
   }
 
-  return { isValid: true };
+  return user;
 
 
 

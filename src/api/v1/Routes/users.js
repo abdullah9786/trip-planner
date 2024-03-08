@@ -7,6 +7,7 @@ const validateUser = require("../Middleware/verify-user");
 
 router.route("/").get(getAllUsers).post(createUserRules, validatorsResult , addUser);
 router.route("/verify").get(verifyUser)
+router.route("/profile").get(validateUser)
 router.route("/google-login").get(verifyGoogleUser)
 router.route("/:userId").patch(updateUserRules, validatorsResult, patchUser);
 

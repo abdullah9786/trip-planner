@@ -4,26 +4,25 @@ const Users = require("../Models/Users");
 const jwt = require('jsonwebtoken');
 
 const validateUser = async (req, res, next) => {
-    const token  = req.headers.authorization;
-    if (!token) {
-        // return res.status(400).json({ error: 'Token is missing.' });
-    throw new BadRequestError("Token is missing","Validator Middleware");
+    const userId  = req.query.userId;
+    if (!userId) {
+        // return res.status(400).json({ error: 'UserId is missing.' });
+    throw new BadRequestError("UserId is missing","Validator Middleware");
       }
   
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await Users.findOne({ email: decoded.email });
+      const user = await Users.findOne({ _id: userId });
   
       if (!user) {
-        throw new NotFoundError("Token is missing","Validator Middleware");
+        throw new NotFoundError("UserId is Invalid","Validator Middleware");
       }
   
       if (user.isValid) {
-        return res.status(StatusCodes.OK).json({ result: {isValid:true} });
+        return res.status(StatusCodes.OK).json({ result: user });
+      }
+      else{
+        throw new NotFoundError("UserId is Invalid","Validator Middleware");
       }
   
-      user.isValid = true;
-      await user.save();
-    next();
 };
 
 module.exports = validateUser
