@@ -38,13 +38,13 @@ const create = async ( userId, promptInfo ) => {
     await user.save()
     let result = await Iternary.create({userId, response: aiResult})
     console.log(result);
-    return {status:1, data: aiResult}
+    return {status:1, data: result}
   }
   else if(user.isPremium){
     let aiResult = await generateAiResponse()
     let result =  await Iternary.create({userId, response: aiResult})
     console.log(result);
-    return {status:1, data: aiResult}
+    return {status:1, data: result}
   }
 };
 
