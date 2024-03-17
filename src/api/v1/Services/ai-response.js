@@ -20,7 +20,7 @@ const create = async ( userId, promptInfo ) => {
     console.log(completion.choices[0]);
 
     // return response.data.choices[0].message.content;
-    return JSON.parse(completion.choices[0].message.content) 
+    return JSON.parse(completion.choices[0].message.content).result.data 
   }
   const user = await Users.findOne({ _id: userId });
   console.log(userId);
