@@ -2,67 +2,59 @@ const Website = require("../Models/Websites");
 const { StatusCodes } = require("http-status-codes");
 const axios = require('axios');
 const OpenAI = require("openai");
+const { prompt } = require("../Helpers/prompt");
+const Users = require("../Models/Users");
+const { NotFoundError } = require("../../../Errors");
+const Iternary = require("../Models/Iternary");
 
 
-const get = async () => {
-  // Make a request to the OpenAI API
-  // const openaiApiKey = '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';
-  const openaiApiKey = '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';
-  const apiUrl = 'https://api.openai.com/v1/chat/completions';
-  const openai = new OpenAI({apiKey:openaiApiKey});
+const create = async ( userId, promptInfo ) => {
+  const generateAiResponse = async () => {
+    const openaiApiKey = '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';
+    const openai = new OpenAI({ apiKey: openaiApiKey });
 
-    // const response = await axios.post(
-    //   apiUrl,
-    //   {
-    //     model: 'gpt-3.5-turbo-16k-0613',
-    //     messages: [{ role: 'system', content: 'You are a helpful assistant.' }, {
-    //       role: 'user', content: {
-    //         "message": "Hello, ChatGPT!"
-    //       }
-    //     }],
-    //   },
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${openaiApiKey}`,
-    //     },
-    //   }
-    // );
-
-    // const response = await axios.post(
-    //   'https://api.openai.com/v1/engines/davinci/completions',
-    //   {
-    //     prompt: "Hello",
-    //     max_tokens: 100
-    //   },
-    //   {
-    //     headers: {
-    //       'Authorization': `Bearer ${openaiApiKey}`,
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    // );
     const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: `Generate a JSON object with information about 10 cars, including their names, manufacturers, model years, and prices. Each entry in the 'cars' array should have the following structure:
-
-      {
-          "car_name": "<Car Name>",
-          "manufacturer": "<Manufacturer>",
-          "model_year": <Model Year>,
-          "price": "<Price>"
-      }
-      ` }],
+      messages: [{ role: "system", content: prompt(promptInfo) }],
       model: "gpt-3.5-turbo",
     });
-  
+
     console.log(completion.choices[0]);
 
-console.log(completion);
-  // return response.data.choices[0].message.content;
-  let result = { data : JSON.parse(completion.choices[0].message.content) }
-  return result;
+    // return response.data.choices[0].message.content;
+    return JSON.parse(completion.choices[0].message.content) 
+  }
+  const user = await Users.findOne({ _id: userId });
+  console.log(userId);
+  if (!user) {
+    throw new NotFoundError("User Not found", "Ai service");
+  }
+
+  if(!user.isIternaryAllowed && !user.isPremium){
+    return {status:0, data: "Your Free Trial Is Exhausted"}
+  }
+
+  else if(user.isIternaryAllowed && !user.isPremium){
+    let aiResult = await generateAiResponse()
+    user.isIternaryAllowed = false,
+    await user.save()
+    let result = await Iternary.create({userId, response: aiResult})
+    console.log(result);
+    return {status:1, data: aiResult}
+  }
+  else if(user.isPremium){
+    let aiResult = await generateAiResponse()
+    let result =  await Iternary.create({userId, response: aiResult})
+    console.log(result);
+    return {status:1, data: aiResult}
+  }
 };
 
+const get = async (id) => {
+  let iternary = await Iternary.findOne({ _id: id })
+  return iternary
+}
+
 module.exports = {
-  get,
+  create,
+  get
 };

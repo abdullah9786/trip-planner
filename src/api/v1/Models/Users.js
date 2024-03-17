@@ -28,7 +28,10 @@ const UsersSchema = new Schema(
     stripeCoupon:{
       type: mongoose.Types.ObjectId,
       ref: "Coupon",
-    }
+    },
+    paymentInfo: {
+      type: Object,
+    },
   },
   { timestamps: true }
 );
