@@ -10,7 +10,7 @@ const Iternary = require("../Models/Iternary");
 
 const create = async ( userId, promptInfo ) => {
   const generateAiResponse = async () => {
-    const openaiApiKey = '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';
+    const openaiApiKey = process.env.openaiApiKey
     const openai = new OpenAI({ apiKey: openaiApiKey });
 
     const completion = await openai.chat.completions.create({
