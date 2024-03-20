@@ -42,7 +42,7 @@ const webhook = async (req,res) => {
     throw new BadRequestError(`Webhook Error: ${err.message}`, "payement service");
   }
 
-  console.log(event.type, "eventtype");
+  console.log(event, "eventtype");
   // Handle the payment_intent.succeeded event
   if (event.type === 'payment_intent.succeeded') {
     const paymentIntent = event.data.object;
