@@ -10,7 +10,7 @@ const port = 3003
 
 const app = express()
 var cors = require('cors')
-app.use('/api/v1/payment', require('./src/api/v1/Routes/payment'))
+app.use('/api/v1/payment',express.raw({type: 'application/json'}) ,require('./src/api/v1/Routes/payment'))
 
 app.use(express.json())
 app.use(cors())
