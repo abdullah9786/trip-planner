@@ -4,7 +4,7 @@ const { BadRequestError } = require("../../../Errors");
 const Users = require("../Models/Users");
 const stripe = require("stripe")("sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN")
 const checkoutSession = async (userId) => {
-  console.log("session");
+  console.log("session",userId);
   // Make a request to the OpenAI API
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -43,7 +43,7 @@ const webhook = async (req,res) => {
     throw new BadRequestError(`Webhook Error: ${err.message}`, "payement service");
   }
 
-  console.log(event, "eventtype");
+  // console.log(event, "eventtype");
   // Handle the payment_intent.succeeded event
   if (event.type === 'checkout.session.completed') {
     const paymentIntent = event.data.object;
