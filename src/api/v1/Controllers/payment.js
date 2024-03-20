@@ -4,7 +4,7 @@ const Website = require("../Models/Websites");
 const paymentService = require('../Services/payment')
 
 const makePayment = async (req, res) => {
-    let result = await paymentService.pay();
+    let result = await paymentService.checkoutSession();
     // console.log(req,result);
     res.status(StatusCodes.OK).json({ result });
 };
