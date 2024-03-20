@@ -1,8 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const axios = require('axios');
 const { BadRequestError } = require("../../../Errors");
+const Users = require("../Models/Users");
 const stripe = require("stripe")("sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN")
-const checkoutSession = async () => {
+const checkoutSession = async (userId) => {
   console.log("session");
   // Make a request to the OpenAI API
   const session = await stripe.checkout.sessions.create({
@@ -23,7 +24,7 @@ const checkoutSession = async () => {
     success_url: "https://hello.com",
     cancel_url: "https://hello.com",
     metadata: {
-      userId: 'someId',
+      userId: userId,
   },
   })
   console.log('session');
@@ -47,6 +48,11 @@ const webhook = async (req,res) => {
   if (event.type === 'checkout.session.completed') {
     const paymentIntent = event.data.object;
 
+    let user = await Users.findOne({ _id: paymentIntent.metadata.userId });
+    user.isPremium = true
+    user.isIternaryAllowed = true
+    user.paymentInfo = paymentIntent
+    await user.save()
     console.log(paymentIntent);
 
     // res.status(200).end();
