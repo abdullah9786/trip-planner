@@ -45,7 +45,7 @@ const webhook = async (req,res) => {
 
     console.log(paymentIntent);
 
-    res.status(200).end();
+    // res.status(200).end();
     return "webhook working"
   }
 }
