@@ -10,6 +10,8 @@ const port = 3003
 
 const app = express()
 var cors = require('cors')
+app.use('/api/v1/payment', require('./src/api/v1/Routes/payment'))
+
 app.use(express.json())
 app.use(cors())
 
@@ -18,7 +20,7 @@ app.use(cors())
 app.use('/api/v1/users', require('./src/api/v1/Routes/users'))
 app.use('/api/v1/coupons', require('./src/api/v1/Routes/coupons'))
 app.use('/api/v1/ai', require('./src/api/v1/Routes/ai-response'))
-app.use('/api/v1/payment', require('./src/api/v1/Routes/payment'))
+// app.use('/api/v1/payment', require('./src/api/v1/Routes/payment'))
 
 // Middlewares
 // app.use(notFound)
