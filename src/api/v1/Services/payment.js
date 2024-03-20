@@ -47,6 +47,7 @@ const webhook = async (req) => {
     res.status(200).end();
     return "webhook working"
   }
+}
   module.exports = {
     pay,
     webhook
