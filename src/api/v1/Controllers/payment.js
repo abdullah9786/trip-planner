@@ -11,7 +11,8 @@ const makePayment = async (req, res) => {
 
 const webHookController = async (req, res) => {
     let result = await paymentService.webhook(req);
-    res.status(StatusCodes.OK).json({ result });
+    // res.status(StatusCodes.OK).json({ result });
+    res.status(200).end();
 }
 
 module.exports = {
