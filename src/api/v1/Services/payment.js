@@ -44,7 +44,7 @@ const webhook = async (req,res) => {
 
   console.log(event, "eventtype");
   // Handle the payment_intent.succeeded event
-  if (event.type === 'payment_intent.succeeded') {
+  if (event.type === 'checkout.session.completed') {
     const paymentIntent = event.data.object;
 
     console.log(paymentIntent);
