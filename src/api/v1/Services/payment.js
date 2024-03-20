@@ -29,7 +29,7 @@ const checkoutSession = async () => {
 };
 
 const webhook = async (req,res) => {
-  console.log("webhook");
+  console.log("webhook", req.headers);
   const sig = req.headers['stripe-signature'];
   let event;
 
