@@ -21,7 +21,10 @@ const checkoutSession = async () => {
       quantity: 1,
     }],
     success_url: "https://hello.com",
-    cancel_url: "https://hello.com"
+    cancel_url: "https://hello.com",
+    metadata: {
+      userId: 'someId',
+  },
   })
   console.log('session');
   let result = session
