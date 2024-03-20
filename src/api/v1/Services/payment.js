@@ -26,6 +26,11 @@ const pay = async () => {
   return result;
 };
 
+const webhook = async (req) => {
+  console.log("webhook");
+  return "webhook working"
+}
 module.exports = {
   pay,
+  webhook
 };
