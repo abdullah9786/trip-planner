@@ -2,9 +2,10 @@ const { NotFoundError } = require("../../../Errors");
 const { StatusCodes } = require('http-status-codes')
 const users = require("../Models/Users.js");
 const userService = require('../Services/users.js')
+const requestIP = require('request-ip');
 
 const getAllUsers = async (req, res) => {
-  console.log(req.ip,"Asd");
+  console.log(requestIP.getClientIp(req),"Asd");
   let result = await userService.get();
   res.status(StatusCodes.OK).json({ result });
 };
