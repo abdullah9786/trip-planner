@@ -3,9 +3,10 @@ const { StatusCodes } = require('http-status-codes')
 const users = require("../Models/Users.js");
 const userService = require('../Services/users.js')
 const requestIP = require('request-ip');
+const IP = require('ip');
 
 const getAllUsers = async (req, res) => {
-  console.log(requestIP.getClientIp(req),"Asd");
+  console.log(requestIP.getClientIp(req),"Asd",IP.address());
   let result = await userService.get();
   res.status(StatusCodes.OK).json({ result });
 };
