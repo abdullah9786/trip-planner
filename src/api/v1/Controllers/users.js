@@ -6,7 +6,7 @@ const requestIP = require('request-ip');
 const IP = require('ip');
 
 const getAllUsers = async (req, res) => {
-  console.log(requestIP.getClientIp(req),"Asd",IP.address());
+  console.log(req.ip,"Asd",requestIP.getClientIp(req));
   let result = await userService.get();
   res.status(StatusCodes.OK).json({ result });
 };
