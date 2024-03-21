@@ -4,6 +4,7 @@ const users = require("../Models/Users.js");
 const userService = require('../Services/users.js')
 
 const getAllUsers = async (req, res) => {
+  console.log(req.socket.remoteAddress,"Asd");
   let result = await userService.get();
   res.status(StatusCodes.OK).json({ result });
 };
