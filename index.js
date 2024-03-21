@@ -10,6 +10,7 @@ const port = 3003
 
 const app = express()
 var cors = require('cors')
+app.set('trust proxy', true);
 app.use('/api/v1/webhook',express.raw({type: 'application/json'}) ,require('./src/api/v1/Routes/webhook'))
 
 app.use(express.json())
