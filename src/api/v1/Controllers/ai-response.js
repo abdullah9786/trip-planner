@@ -16,8 +16,15 @@ const generateAiResponse = async (req, res) => {
     // console.log(req,result);
     res.status(StatusCodes.OK).json({ result });
 };
+const generateAiResponseLoggedOutUser = async (req, res) => {
+    const {promptInfo} = req.body   
+    let result = await aiResponse.createForLoggedOutUser( promptInfo);
+    // console.log(req,result);
+    res.status(StatusCodes.OK).json({ result });
+};
 
 module.exports = {
     generateAiResponse,
-    getAiResponse
+    getAiResponse,
+    generateAiResponseLoggedOutUser
 };

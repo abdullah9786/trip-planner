@@ -6,7 +6,7 @@ const { prompt } = require("../Helpers/prompt");
 const Users = require("../Models/Users");
 const { NotFoundError } = require("../../../Errors");
 const Iternary = require("../Models/Iternary");
-
+const uuid = require('uuid');
 
 const create = async ( userId, promptInfo ) => {
   const generateAiResponse = async () => {
@@ -15,6 +15,10 @@ const create = async ( userId, promptInfo ) => {
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: prompt(promptInfo) }],
       model: "gpt-3.5-turbo",
+      temperature: 1,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.2,
     });
 
     console.log(completion.choices[0]);
@@ -48,6 +52,31 @@ const create = async ( userId, promptInfo ) => {
   }
 };
 
+const createForLoggedOutUser = async (promptInfo ) => {
+  const generateAiResponse = async () => {
+    const openai = new OpenAI({ apiKey: process.env.openaiApiKey });
+
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "system", content: prompt(promptInfo) }],
+      model: "gpt-3.5-turbo",
+      temperature: 1,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.2,
+    });
+
+    console.log(completion.choices[0]);
+
+    // return response.data.choices[0].message.content;
+    return JSON.parse(completion.choices[0].message.content).result.data 
+  }
+  let aiResult = await generateAiResponse()
+  let result =  await Iternary.create({userId:uuid.v4(), response: aiResult})
+  console.log(result);
+  console.log('Unique ID:', uuid.v4());
+  return {status:1, data: result}
+};
+
 const get = async (id) => {
   let iternary = await Iternary.findOne({ _id: id })
   return iternary
@@ -55,5 +84,6 @@ const get = async (id) => {
 
 module.exports = {
   create,
-  get
+  get,
+  createForLoggedOutUser
 };
