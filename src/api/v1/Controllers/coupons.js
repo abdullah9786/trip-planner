@@ -16,7 +16,7 @@ const addNewCoupon = async (req, res) => {
 };
 
 const deleteCoupon = async (req, res) => {
-    let result = await couponService.redeem(req.body.couponId, req.body.stripeCouponId);
+    let result = await couponService.remove(req.body.couponId, req.body.stripeCouponId);
     // console.log(req,result);
     res.status(StatusCodes.OK).json({ result });
 };

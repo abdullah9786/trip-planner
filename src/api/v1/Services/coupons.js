@@ -31,6 +31,7 @@ const create = async (name) => {
 }
 const remove = async (couponId, stripeCouponId) => {
     Users.updateMany({ couponRef: couponId }, { $set: { couponRef: "", isPremium: false } });
+    const deleted = await stripe.coupons.del(stripeCouponId);
     let result = await Coupon.findByIdAndDelete({ _id: couponId })
     return result;
 };
