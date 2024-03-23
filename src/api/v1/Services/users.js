@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const BadRequestError = require("../../../Errors/bad-request.js");
 const NotFoundError = require("../../../Errors/not-found.js");
 const { default: axios } = require("axios");
+const { sendMail } = require("../Helpers/mail-sender.js");
+const { purchasedTemplate } = require("../Helpers/mail-templates/plan-purchased.js");
 const stripe = require("stripe")("sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN")
 
 const get = async () => {
@@ -20,22 +22,23 @@ const create = async (data) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'abdullahansari9768@gmail.com',
-      pass: 'vgvk fdhs ikdo ljze',
+      user: 'tourplanner.ai@gmail.com',
+      pass: 'lsic vvnx ablv aqfx',
     },
   });
 
   const mailOptions = {
-    from: 'abdullahansari9768@gmail.com',
+    from: 'tourplanner.ai@gmail.com',
     to: data.email,
     subject: 'Email Verification',
-    html: `Click <a href="http://yourdomain.com/verify?token=${token}">here</a> to verify your email.`,
+    html: `Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`,
   };
 
   const user = await User.findOne({ email: data.email });
   console.log(user);
   if (user) {
-    await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions);
+    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`,data.email)
   }
   else {
     let createdUser = await User.create(data);
@@ -48,6 +51,7 @@ const create = async (data) => {
       { stripeId: customer.id },
       { new: true } // Return the updated document
     );
+    await sendMail(purchasedTemplate,data.email)
   }
 
 
@@ -57,7 +61,7 @@ const create = async (data) => {
 const update = async (userId, couponStatus) => {
   let result = await User.findOneAndUpdate(
     { _id: userId },
-    { isPremium: couponStatus },
+    { isPremium: couponStatus, isIternaryAllowed:couponStatus},
     { returnDocument: "after", runValidators: true }
   ).populate('stripeCoupon');
   return result;
