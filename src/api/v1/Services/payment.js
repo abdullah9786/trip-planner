@@ -23,8 +23,8 @@ const checkoutSession = async (userId) => {
       },
       quantity: 1,
     }],
-    success_url: "https://hello.com",
-    cancel_url: "https://hello.com",
+    success_url: "https://www.tourplanner.ai/plans?payment=success",
+    cancel_url: "https://www.tourplanner.ai/plans?payment=failure",
     metadata: {
       userId: userId,
   },

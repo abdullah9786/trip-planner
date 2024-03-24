@@ -30,7 +30,7 @@ const create = async (name) => {
     return "coupon Created Successfully"
 }
 const remove = async (couponId, stripeCouponId) => {
-    Users.updateMany({ couponRef: couponId }, { $set: { couponRef: "", isPremium: false } });
+    Users.updateMany({ couponRef: couponId }, { $set: { couponRef: "", isPremium: false, isIternaryAllowed: false } });
     const deleted = await stripe.coupons.del(stripeCouponId);
     let result = await Coupon.findByIdAndDelete({ _id: couponId })
     return result;
@@ -56,6 +56,7 @@ const redeem = async (couponName, userId) => {
             user.stripeCoupon = coupon._id
             user.save()
             console.log(user);
+            await sendMail(`Coupon Redeem`,user.email)
             return user
         }
         else {

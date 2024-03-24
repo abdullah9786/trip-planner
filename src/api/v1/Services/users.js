@@ -38,7 +38,7 @@ const create = async (data) => {
   console.log(user);
   if (user) {
     // await transporter.sendMail(mailOptions);
-    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`,data.email)
+    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
   }
   else {
     let createdUser = await User.create(data);
@@ -51,7 +51,7 @@ const create = async (data) => {
       { stripeId: customer.id },
       { new: true } // Return the updated document
     );
-    await sendMail(purchasedTemplate,data.email)
+    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
   }
 
 
@@ -61,7 +61,7 @@ const create = async (data) => {
 const update = async (userId, couponStatus) => {
   let result = await User.findOneAndUpdate(
     { _id: userId },
-    { isPremium: couponStatus, isIternaryAllowed:couponStatus},
+    { isPremium: couponStatus, isIternaryAllowed: couponStatus },
     { returnDocument: "after", runValidators: true }
   ).populate('stripeCoupon');
   return result;
@@ -84,6 +84,10 @@ const verify = async (token) => {
   }
 
   user.isValid = true;
+  if(user.firstLogin){
+    await sendMail(`First Login`, data.email)
+    user.firstLogin = false 
+  }
   await user.save();
   return user;
 
@@ -108,8 +112,8 @@ const googleLogin = async (token) => {
     user.isValid = true;
     await user.save();
   }
-  else{
-    let createdUser = await User.create({email:res.data.email, isValid:true});
+  else {
+    let createdUser = await User.create({ email: res.data.email, isValid: true, firstLogin: false });
     const customer = await stripe.customers.create({
       name: res.data.email,
       email: res.data.email,
@@ -119,6 +123,7 @@ const googleLogin = async (token) => {
       { stripeId: customer.id },
       { new: true } // Return the updated document
     );
+    await sendMail(`First Login`, res.data.email)
   }
 
   return user;

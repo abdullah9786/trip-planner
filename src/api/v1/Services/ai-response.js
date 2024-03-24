@@ -42,6 +42,7 @@ const create = async ( userId, promptInfo ) => {
     await user.save()
     let result = await Iternary.create({userId, response: aiResult})
     console.log(result);
+    await sendMail(`Free Tier Exhausted`,user.email)
     return {status:1, data: result}
   }
   else if(user.isPremium){

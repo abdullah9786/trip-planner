@@ -32,6 +32,11 @@ const UsersSchema = new Schema(
     paymentInfo: {
       type: Object,
     },
+    firstLogin: {
+      type: Boolean,
+      required: false,
+      default:true
+    },
   },
   { timestamps: true }
 );
