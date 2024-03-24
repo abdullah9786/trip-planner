@@ -6,6 +6,7 @@ const BadRequestError = require("../../../Errors/bad-request.js");
 const NotFoundError = require("../../../Errors/not-found.js");
 const { log } = require("console");
 const Users = require("../Models/Users.js");
+const { couponRedeemedTemplate } = require("../Helpers/mail-templates/coupon-redeemed.js");
 const stripe = require('stripe')('sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN');
 
 const get = async () => {
@@ -56,7 +57,7 @@ const redeem = async (couponName, userId) => {
             user.stripeCoupon = coupon._id
             user.save()
             console.log(user);
-            await sendMail(`Coupon Redeem`,user.email)
+            await sendMail(couponRedeemedTemplate ,user.email)
             return user
         }
         else {

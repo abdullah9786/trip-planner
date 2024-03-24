@@ -7,6 +7,7 @@ const Users = require("../Models/Users");
 const { NotFoundError } = require("../../../Errors");
 const Iternary = require("../Models/Iternary");
 const uuid = require('uuid');
+const { limitExhaustedTemplate } = require("../Helpers/mail-templates/limit-exhausted");
 
 const create = async ( userId, promptInfo ) => {
   const generateAiResponse = async () => {
@@ -42,7 +43,7 @@ const create = async ( userId, promptInfo ) => {
     await user.save()
     let result = await Iternary.create({userId, response: aiResult})
     console.log(result);
-    await sendMail(`Free Tier Exhausted`,user.email)
+    await sendMail(limitExhaustedTemplate ,user.email)
     return {status:1, data: result}
   }
   else if(user.isPremium){
