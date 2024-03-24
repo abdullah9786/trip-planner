@@ -39,7 +39,7 @@ const create = async (data) => {
   console.log(user);
   if (user) {
     // await transporter.sendMail(mailOptions);
-    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
+    await sendMail('Email Verification',`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
   }
   else {
     let createdUser = await User.create(data);
@@ -52,7 +52,7 @@ const create = async (data) => {
       { stripeId: customer.id },
       { new: true } // Return the updated document
     );
-    await sendMail(`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
+    await sendMail('Email Verification',`Click <a href="https://www.tourplanner.ai/verify?token=${token}">here</a> to verify your email.`, data.email)
   }
 
 
@@ -86,7 +86,7 @@ const verify = async (token) => {
 
   user.isValid = true;
   if(user.firstLogin){
-    await sendMail(firstLoginTemplate, data.email)
+    await sendMail('Welcome',firstLoginTemplate, data.email)
     user.firstLogin = false 
   }
   await user.save();
@@ -124,7 +124,7 @@ const googleLogin = async (token) => {
       { stripeId: customer.id },
       { new: true } // Return the updated document
     );
-    await sendMail(firstLoginTemplate, res.data.email)
+    await sendMail('Welcome',firstLoginTemplate, res.data.email)
   }
 
   return user;

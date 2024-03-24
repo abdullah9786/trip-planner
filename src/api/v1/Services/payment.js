@@ -56,7 +56,7 @@ const webhook = async (req,res) => {
     user.paymentInfo = paymentIntent
     await user.save()
     console.log(paymentIntent);
-    await sendMail(purchasedTemplate,user.email)
+    await sendMail('Payment Success', purchasedTemplate,user.email)
     // res.status(200).end();
     return "webhook working"
   }

@@ -57,7 +57,7 @@ const redeem = async (couponName, userId) => {
             user.stripeCoupon = coupon._id
             user.save()
             console.log(user);
-            await sendMail(couponRedeemedTemplate ,user.email)
+            await sendMail('Coupon Redeemed',couponRedeemedTemplate ,user.email)
             return user
         }
         else {
