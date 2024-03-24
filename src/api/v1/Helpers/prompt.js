@@ -35,7 +35,7 @@
     
 // }`
 const prompt = (promptInfo) => {
-    return `Create an iternary to explore ${promptInfo.city} for ${promptInfo.days} days. I do not have accommodation booked. As a ${promptInfo.type}, I am looking forward to experiencing the local culture, cuisine, and attractions.  My budget for this trip is ${promptInfo.budget}. I prefer to use ${promptInfo.transportType} to explore the city. For breakfast, lunch, dinner and brunch provide me specific restaurants along with locations for that restaurant, dont give generic locations like "dinner at local restaurant", etc. Also provide 3 tips while travelling which will help my travel. Also, provide a short overview of the city. Give a response in this format.
+    return `Create an itinerary to explore ${promptInfo.city} for ${promptInfo.days} days. I do not have accommodation booked. As a ${promptInfo.type}, I am looking forward to experiencing the local culture, cuisine, and attractions. My budget for this trip is ${promptInfo.budget}. I prefer to use ${promptInfo.transportType} to explore the city. For breakfast, lunch, dinner, and brunch, provide specific restaurants along with their locations. Also, provide 3 tips while traveling that will help my travel. Also, provide a short overview of the city.
     {
         "result": {
             "data": [
