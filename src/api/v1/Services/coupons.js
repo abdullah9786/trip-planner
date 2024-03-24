@@ -7,6 +7,7 @@ const NotFoundError = require("../../../Errors/not-found.js");
 const { log } = require("console");
 const Users = require("../Models/Users.js");
 const { couponRedeemedTemplate } = require("../Helpers/mail-templates/coupon-redeemed.js");
+const { sendMail } = require("../Helpers/mail-sender.js");
 const stripe = require('stripe')('sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN');
 
 const get = async () => {

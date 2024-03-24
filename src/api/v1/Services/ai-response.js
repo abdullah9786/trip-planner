@@ -8,6 +8,7 @@ const { NotFoundError } = require("../../../Errors");
 const Iternary = require("../Models/Iternary");
 const uuid = require('uuid');
 const { limitExhaustedTemplate } = require("../Helpers/mail-templates/limit-exhausted");
+const { sendMail } = require("../Helpers/mail-sender");
 
 const create = async ( userId, promptInfo ) => {
   const generateAiResponse = async () => {
