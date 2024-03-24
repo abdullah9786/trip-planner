@@ -32,14 +32,38 @@
 //         {},{},...
 
 //     ]
-    
+
 // }`
 const prompt = (promptInfo) => {
-    return `Create an itinerary to explore ${promptInfo.city} for ${promptInfo.days} days. I do not have accommodation booked. As a ${promptInfo.type}, I am looking forward to experiencing the local culture, cuisine, and attractions. My budget for this trip is ${promptInfo.budget}. I prefer to use ${promptInfo.transportType} to explore the city. For breakfast, lunch, dinner, and brunch, provide specific restaurants along with their locations. Also, provide 3 tips while traveling that will help my travel. Also, provide a short overview of the city.
+    return `Create an itinerary to explore ${promptInfo.city} for ${promptInfo.days} days. I do not have accommodation booked. As a ${promptInfo.type}, I am looking forward to experiencing the local culture, cuisine, and attractions. My budget for this trip is ${promptInfo.budget}. I prefer to use ${promptInfo.transportType} to explore the city. For breakfast, lunch, dinner, and brunch, provide specific restaurants along with their locations. Also, provide 3 tips while traveling that will help my travel. Also, provide a short overview of the city.  Below is the format of response
     {
         "result": {
-            "data": [
+            "TravelData": [
                 {
+                    "Day": "1",
+                    "Itinerary": [
+                        {
+                            "Time": "",
+                            "Activity": "",
+                            "Info": "",
+                            "AverageCost": ""
+                        },
+                        {
+                            "Time": "",
+                            "Activity": "", 
+                            "Info": "",
+                            "AverageCost": ""
+                        }
+                    ]
+                }, {}, {}....
+            ]
+    }
+    `
+}
+const prompt2 = (promptInfo) => {
+    return ` Write tips and overview for visting ${promptInfo.city}
+    {
+        "result": {
                     "Overview": "",
                     "Tips": [
                         {
@@ -52,33 +76,14 @@ const prompt = (promptInfo) => {
                             "TravelTips3": ""
                         }
                     ],
-                    "TravelData": [
-                        {
-                            "Day": "1",
-                            "Itinerary": [
-                                {
-                                    "Time": "",
-                                    "Activity": "",
-                                    "Info": "",
-                                    "AverageCost": ""
-                                },
-                                {
-                                    "Time": "",
-                                    "Activity": "",
-                                    "Info": "",
-                                    "AverageCost": ""
-                                }
-                            ]
-                        }, {}, {}....
-                    ]
                 }
-            ]
-        }
-    }`
+    }
+    `
 }
 
 module.exports = {
-    prompt
+    prompt,
+    prompt2
 }
 
 
