@@ -33,7 +33,7 @@ const create = async (name) => {
 }
 const remove = async (couponId, stripeCouponId) => {
     let updatedVal = Users.updateMany({ stripeCoupon: couponId }, { $set: { stripeCoupon: "", isPremium: false, isIternaryAllowed: false } });
-    console.log("updatedVal",updatedVal.stripeCouponId);
+    console.log("updatedVal",updatedVal,stripeCouponId);
     const deleted = await stripe.coupons.del(stripeCouponId);
     let result = await Coupon.findByIdAndDelete({ _id: couponId })
     return result;
