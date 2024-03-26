@@ -8,7 +8,7 @@ const { default: axios } = require("axios");
 const { sendMail } = require("../Helpers/mail-sender.js");
 const { purchasedTemplate } = require("../Helpers/mail-templates/plan-purchased.js");
 const { firstLoginTemplate } = require("../Helpers/mail-templates/first-login.js");
-const stripe = require("stripe")("sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN")
+const stripe = require("stripe")(process.env.stripe_secret_key)
 
 const get = async () => {
   console.log("Working");

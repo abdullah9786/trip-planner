@@ -4,7 +4,7 @@ const { BadRequestError } = require("../../../Errors");
 const Users = require("../Models/Users");
 const { purchasedTemplate } = require("../Helpers/mail-templates/plan-purchased");
 const { sendMail } = require("../Helpers/mail-sender");
-const stripe = require("stripe")("sk_test_51OpQGDSCWE6I9nltT5uinyhpTXG5nNh1e6qSNyPpVgorZxaxyOv9YD261Fx6JO9k1qIpjjMA4DKOsvFFmJNted0y007ASDMOEN")
+const stripe = require("stripe")(process.env.stripe_secret_key)
 const checkoutSession = async (userId) => {
   console.log("session",userId);
   // Make a request to the OpenAI API
@@ -15,11 +15,12 @@ const checkoutSession = async (userId) => {
       price_data: {
         // The currency parameter determines which
         // payment methods are used in the Checkout Session.
-        currency: 'inr',
+        currency: 'usd',
         product_data: {
-          name: 'Iternary',
+          name: 'Tourplanner Pro',
+          description:"Generate Itineraries in Seconds using AI"
         },
-        unit_amount: 1000,
+        unit_amount: 1*100,
       },
       quantity: 1,
     }],
