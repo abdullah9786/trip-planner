@@ -86,7 +86,7 @@ const verify = async (token) => {
 
   user.isValid = true;
   if(user.firstLogin){
-    await sendMail('Welcome',firstLoginTemplate, data.email)
+    await sendMail('Welcome',firstLoginTemplate, user.email)
     user.firstLogin = false 
   }
   await user.save();
